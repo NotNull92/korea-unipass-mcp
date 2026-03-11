@@ -2,12 +2,14 @@
 
 > **대한민국 관세청 유니패스(UNI-PASS) 실시간 통관 조회 MCP 서버**
 
+[![npm version](https://img.shields.io/npm/v/korea-unipass-mcp)](https://www.npmjs.com/package/korea-unipass-mcp)
+
 `korea-unipass-mcp`는 Anthropic Claude(Desktop/Code) 내에서 AI 에이전트가 운송장 번호만으로 해외 직구 물품의 통관 상태를 실시간으로 조회할 수 있도록 돕는 **Model Context Protocol(MCP)** 서버입니다.
 
 ## ✨ 주요 기능
 - **실시간 통관 추적**: 관세청 공식 API를 통해 현재 화물의 위치와 통관 단계 조회.
 - **쉬운 용어 풀이**: AI가 복잡한 관세 용어(하선신고, 수입결재 등)를 친절하게 설명.
-- **연도 자동 처리**: 현재 연도를 기준으로 최신 데이터를 우선 조회.
+- **연도 자동 처리**: 현재 연도 → 전년도 순으로 자동 조회하여 연도 경계 배송도 정확히 탐지.
 
 ## 🛠 설치 방법
 
@@ -24,14 +26,39 @@
 7. 다시 **화물통관진행정보조회**를 선택하면 상세 내역 화면에서 **인증키**를 확인할 수 있습니다.
 
 ### 2. Claude Desktop 설정
+
 `claude_desktop_config.json` 파일을 열고 아래 내용을 추가하세요.
+
+#### ✅ 방법 1: npx 사용 (권장 — 별도 설치 불필요)
+
+```json
+{
+  "mcpServers": {
+    "korea-unipass": {
+      "command": "npx",
+      "args": ["-y", "korea-unipass-mcp"],
+      "env": {
+        "KOREA_CUSTOMS_API_KEY": "유니패스_OpenAPI_인증키"
+      }
+    }
+  }
+}
+```
+
+#### 방법 2: 로컬 직접 실행 (소스 클론 후)
+
+```bash
+git clone https://github.com/NotNull92/korea-unipass-mcp.git
+cd korea-unipass-mcp
+npm install && npm run build
+```
 
 ```json
 {
   "mcpServers": {
     "korea-unipass": {
       "command": "node",
-      "args": ["C:/Users/PC/Desktop/MCP_project/korea-unipass-mcp/dist/index.js"],
+      "args": ["/절대경로/korea-unipass-mcp/dist/index.js"],
       "env": {
         "KOREA_CUSTOMS_API_KEY": "유니패스_OpenAPI_인증키"
       }
